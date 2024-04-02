@@ -14,7 +14,7 @@ import {
     Button
   } from 'react-native';
 
-function ToDOList({ items }){
+function ToDoList({ items }){
   
   return(
 
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ToDOList;
+export default ToDoList;
