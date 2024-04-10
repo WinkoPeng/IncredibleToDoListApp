@@ -1,8 +1,4 @@
-/**
- * My To Do List App
- */
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     SafeAreaView,
     StyleSheet,
@@ -12,47 +8,62 @@ import {
     ScrollView,
     TextInput,
     Button
-  } from 'react-native';
+} from 'react-native';
+import tasks from '../data/tasks.json';
 
-function ToDoForm( {addTask} ) {
+function ToDoForm({ addTask }) {
+    const [taskText, setTaskText] = useState('');
+    const [tasks, setTasks] = useState([]);
 
-const [taskText, setTaskText] = React.useState('');
+    useEffect(() => {
+      const data = require('../data/tasks.json');
+      setTasks(data.tasks);
+  }, []);
+  
 
-const handlePress = () => {
-  addTask(taskText);
-  setTaskText('');
-}
+    const handlePress = () => {
+        addTask(taskText);
+        setTaskText('');
+    }
 
-return (
-  <View style={styles.form}>
-      <TextInput
-        style={styles.input}
-        placeholder="Add a new task..."
-        onChangeText={(text) => setTaskText(text)}
-        value={taskText}
-      />
-      <Button title="Add Task" onPress={handlePress} />
-  </View>   
-);
-}
+    const handleAddTask = () => {
+        const randomIndex = Math.floor(Math.random() * tasks.length);
+        const randomTask = tasks[randomIndex];
+        setTaskText(randomTask);
+    }
 
-    const styles = StyleSheet.create({
-        form: {
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginHorizontal: 20,
-          marginTop: 20,
-        },
-        input: {
-          flex: 1,
-          borderWidth: 1,
-          borderColor: '#ccc',
-          paddingHorizontal: 10,
-          paddingVertical: 5,
-          marginRight: 10,
-        },
-      }
+    return (
+        <View style={styles.form}>
+            <TextInput
+                style={styles.input}
+                placeholder="Add a new task..."
+                onChangeText={(text) => setTaskText(text)}
+                value={taskText}
+            />
+            <Button title="Add Task" onPress={handlePress} />
+            <Button title="Generate Random Task" onPress={handleAddTask} />
+        </View>
     );
+}
+
+const styles = StyleSheet.create({
+    form: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        backgroundColor: '#f0f0f0',
+        marginBottom: 10,
+    },
+    input: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginRight: 10,
+    },
+});
 
 export default ToDoForm;
